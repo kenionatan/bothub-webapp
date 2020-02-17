@@ -13,6 +13,7 @@ import RepositorySettings from '@/views/repository/Settings';
 import RepositoryAnalyzeText from '@/views/repository/AnalyzeText';
 import RepositoryEvaluate from '@/views/repository/Evaluate';
 import RepositoryVersions from '@/views/repository/Versions';
+import RepositoryDashboard from '@/views/repository/Dashboard';
 import NotFound from '@/views/NotFound';
 import SafariAlert from '@/views/SafariAlert';
 import store from '../store';
@@ -82,6 +83,11 @@ export default new Router({
           path: ':ownerNickname/:slug/',
           name: 'repository-summary',
           component: RepositoryHome,
+        },
+        {
+          path: ':ownerNickname/:slug/dashboard',
+          name: 'repository-dashboard',
+          component: RepositoryDashboard,
         },
         {
           path: ':ownerNickname/:slug/training/',

@@ -30,6 +30,12 @@
             size="is-medium"
             label="Summary"/>
           <b-menu-item
+            :to="{ name: 'repository-dashboard' }"
+            tag="router-link"
+            icon="dashboard"
+            size="is-medium"
+            label="Dashboard"/>
+          <b-menu-item
             :to="{ name: 'repository-training' }"
             tag="router-link"
             icon="refresh"
@@ -108,6 +114,10 @@
           class="icon-list"
           icon="home"
           @click.native="routerHandle('repository-summary')" />
+        <b-icon
+          class="icon-list"
+          icon="dashboard"
+          @click.native="routerHandle('repository-dashboard')" />
         <b-icon
           class="icon-list"
           icon="wechat"
