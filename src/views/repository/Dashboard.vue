@@ -25,15 +25,15 @@
         <div class="dashboard__container column is-three-quarters">
           <p class="dashboard__label"> Word Distribution</p>
           <b-field grouped>
-            <b-select placeholder="Enter your intention here" expanded>
+            <b-select
+              placeholder="Enter your intention here"
+              expanded>
               <option
                 v-for="intent in repository.intents_list"
                 :key="intent"
                 :value="intent">Flint</option>
-          </b-select>
-        <p class="control">
-                <b-button class="button is-primary"> Word Distribution </b-button>
-            </p>
+            </b-select>
+            <b-button class="button is-primary"> Word Distribution </b-button>
           </b-field>
         </div>
       </div>
@@ -109,9 +109,13 @@ export default {
 
 <style lang="scss" scoped>
 
-    .column {
-        padding: 0;
+    .columns {
+        margin: 0;
     }
+
+    // .column {
+    //     padding: 0;
+    // }
 
     .dashboard {
         &__language-status {
