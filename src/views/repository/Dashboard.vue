@@ -35,6 +35,13 @@
             </b-select>
             <b-button class="button is-primary"> Word Distribution </b-button>
           </b-field>
+          <wordcloud
+            :data="defaultWords"
+            :color="myColors"
+            :show-tooltip="true"
+            :rotate="{from: 0, to: 0, numOfOrientation: 0 }"
+            name-key="name"
+            value-key="value"/>
         </div>
       </div>
       <div class="columns">
@@ -69,6 +76,7 @@
 </template>
 
 <script>
+import wordcloud from 'vue-wordcloud';
 import RepositoryBase from './Base';
 import RepositoryViewBase from '@/components/repository/RepositoryViewBase';
 
@@ -76,6 +84,7 @@ export default {
   name: 'RepositoryDashboard',
   components: {
     RepositoryViewBase,
+    wordcloud,
   },
   extends: RepositoryBase,
   data() {
@@ -101,6 +110,44 @@ export default {
           name: 'Japanese',
           percentage: 0.2,
         },
+      ],
+      myColors: ['#3AD4A1', '#4AEB96', '#1AC41345', '#025624', '#3DDDC8'],
+      defaultWords: [{
+        name: 'Cat',
+        value: 26,
+      },
+      {
+        name: 'fish',
+        value: 19,
+      },
+      {
+        name: 'things',
+        value: 18,
+      },
+      {
+        name: 'look',
+        value: 16,
+      },
+      {
+        name: 'two',
+        value: 15,
+      },
+      {
+        name: 'fun',
+        value: 9,
+      },
+      {
+        name: 'know',
+        value: 9,
+      },
+      {
+        name: 'good',
+        value: 9,
+      },
+      {
+        name: 'play',
+        value: 6,
+      },
       ],
     };
   },

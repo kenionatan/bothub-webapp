@@ -32,7 +32,7 @@
           <b-menu-item
             :to="{ name: 'repository-dashboard' }"
             tag="router-link"
-            icon="dashboard"
+            icon="view-dashboard"
             size="is-medium"
             label="Dashboard"/>
           <b-menu-item
@@ -116,7 +116,7 @@
           @click.native="routerHandle('repository-summary')" />
         <b-icon
           class="icon-list"
-          icon="dashboard"
+          icon="view-dashboard"
           @click.native="routerHandle('repository-dashboard')" />
         <b-icon
           class="icon-list"
