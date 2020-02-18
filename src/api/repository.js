@@ -97,6 +97,11 @@ export default {
       `/v1/repository/${ownerNickname}/${slug}/languagesstatus/`,
     );
   },
+  getLanguageStatusByUUID(repositoryUUID) {
+    return request.$http.get(
+      `/v2/repository/repository-info/${repositoryUUID}/languagesstatus/`,
+    );
+  },
   vote(ownerNickname, slug, value) {
     return request.$http.post(
       `/v1/repository/${ownerNickname}/${slug}/vote/`,

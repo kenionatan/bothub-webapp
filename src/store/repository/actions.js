@@ -89,6 +89,9 @@ export default {
   getRepositoryLanguagesStatus(store, { ownerNickname, slug }) {
     return repository.getLanguagesStatus(ownerNickname, slug);
   },
+  getLanguageStatusByUUID(store, repositoryUUID) {
+    return repository.getLanguageStatusByUUID(repositoryUUID);
+  },
   repositoryVoteUp(store, { ownerNickname, slug }) {
     return repository.voteUp(ownerNickname, slug);
   },

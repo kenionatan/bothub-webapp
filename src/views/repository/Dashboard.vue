@@ -24,46 +24,56 @@
         </div>
         <div class="dashboard__container column is-three-quarters">
           <p class="dashboard__label"> Word Distribution</p>
-          <b-field grouped>
-            <b-select
-              placeholder="Enter your intention here"
-              expanded>
-              <option
-                v-for="intent in repository.intents_list"
-                :key="intent"
-                :value="intent">Flint</option>
-            </b-select>
-            <b-button class="button is-primary"> Word Distribution </b-button>
-          </b-field>
-          <wordcloud
-            :data="defaultWords"
-            :color="myColors"
-            :show-tooltip="true"
-            :rotate="{from: 0, to: 0, numOfOrientation: 0 }"
-            name-key="name"
-            value-key="value"/>
+          <div class="dashboard__words__container">
+            <b-field grouped>
+              <b-select
+                placeholder="Enter your intention here"
+                expanded>
+                <option
+                  v-for="intent in repository.intents_list"
+                  :key="intent"
+                  :value="intent">Flint</option>
+              </b-select>
+              <b-button class="button is-primary"> Word Distribution </b-button>
+            </b-field>
+            <p> Analyze the relevance of each words in your intentions </p>
+            <wordcloud
+              :data="defaultWords"
+              :color="myColors"
+              :show-tooltip="true"
+              :rotate="{from: 0, to: 0, numOfOrientation: 0 }"
+              name-key="name"
+              value-key="value"/>
+          </div>
         </div>
       </div>
       <div class="columns">
         <div class="dashboard__container column is-half">
           <p class="dashboard__label"> Translation Status</p>
           <div
-            v-for="(item, index) in translationStatus"
-            :key="item.language" >
+            v-for="(translation, index) in translationsStatus"
+            :key="translation.id" >
             <div class="columns is-centered dashboard__language-status">
               <div class="column has-text-centered is-two-fifths">
-                {{ item.name }}
+                <div class="dashboard__language__name__container">
+                  <flag :language="translation.id" />
+                  <span class="dashboard__language__name"> {{ translation.title }} </span>
+                </div>
               </div>
-              <div class="column has-text-centered is-half"><b-progress
-                :value="item.percentage * 100"
-                size="is-small"
-                type="is-primary"/></div>
+              <div class="column has-text-centered is-half">
+                <span class="dashboard__progress__wrapper">
+                  <b-progress
+                    :value="translation.percentage"
+                    size="is-small"
+                    type="is-primary"/>
+                </span>
+              </div>
               <div class="column has-text-centered">
-                <span> {{ item.percentage * 100 }}% </span>
+                <span class="dashboard__language__percentage"> {{ translation.percentage }}% </span>
               </div>
             </div>
             <div
-              v-if="index !== translationStatus.length-1"
+              v-if="index !== translationsStatus.length-1"
               class="dashboard__numbers__separator" />
           </div>
         </div>
@@ -76,41 +86,26 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import wordcloud from 'vue-wordcloud';
 import RepositoryBase from './Base';
 import RepositoryViewBase from '@/components/repository/RepositoryViewBase';
+import Flag from '@/components/shared/Flag';
+import TranslationsStatus from '@/components/translate/TranslationsStatus';
+import { LANGUAGES } from '@/utils';
 
 export default {
   name: 'RepositoryDashboard',
   components: {
     RepositoryViewBase,
     wordcloud,
+    Flag,
+    TranslationsStatus,
   },
   extends: RepositoryBase,
   data() {
     return {
-      translationStatus: [
-        {
-          language: 'pt-br',
-          name: 'Portuguese',
-          percentage: 0.5,
-        },
-        {
-          language: 'en',
-          name: 'English',
-          percentage: 0.8,
-        },
-        {
-          language: 'esp',
-          name: 'Spanish',
-          percentage: 1,
-        },
-        {
-          language: 'jp',
-          name: 'Japanese',
-          percentage: 0.2,
-        },
-      ],
+      languageStatus: null,
       myColors: ['#3AD4A1', '#4AEB96', '#1AC41345', '#025624', '#3DDDC8'],
       defaultWords: [{
         name: 'Cat',
@@ -151,6 +146,33 @@ export default {
       ],
     };
   },
+  computed: {
+    repositoryUUID() {
+      if (!this.repository || this.repository.uuid === 'null') return null;
+      return this.repository.uuid;
+    },
+    translationsStatus() {
+      if (!this.languageStatus) return null;
+
+      return Object.entries(this.languageStatus).map(entry => ({
+        id: entry[0],
+        percentage: entry[1].base_translations.percentage,
+        title: LANGUAGES[entry[0]],
+      }));
+    },
+  },
+  watch: {
+    async repositoryUUID() {
+      if (!this.repositoryUUID) return;
+      const response = await this.getLanguageStatusByUUID(this.repositoryUUID);
+      this.languageStatus = response.data.languages_status;
+    },
+  },
+  methods: {
+    ...mapActions([
+      'getLanguageStatusByUUID',
+    ]),
+  },
 };
 </script>
 
@@ -159,10 +181,6 @@ export default {
     .columns {
         margin: 0;
     }
-
-    // .column {
-    //     padding: 0;
-    // }
 
     .dashboard {
         &__language-status {
@@ -180,7 +198,30 @@ export default {
             text-align: center;
             margin: 0.82rem;
             background-color: #F5F5F5;
-            border-radius: 5px;
+            border-radius: 15px;
+        }
+
+        &__language {
+
+          &__percentage {
+              font-size: 0.8rem;
+          }
+
+          &__name {
+
+            margin-left: 1rem;
+            font-size: 0.8rem;
+            color: #2BBFAC;
+
+            &__container {
+              display: flex;
+              justify-items: flex-start;
+            }
+          }
+        }
+
+        &__progress__wrapper {
+          display: inline-block;
         }
 
         &__numbers {
@@ -195,6 +236,12 @@ export default {
                 width: 100%;
                 background-color: #CFD5D9;
             }
+        }
+
+        &__words {
+          &__container {
+            margin: 0 5.6rem 0 5.6rem;
+          }
         }
     }
 </style>
