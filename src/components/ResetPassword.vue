@@ -1,28 +1,26 @@
 <template>
-  <boarding-layout>
-    <div class="recover-password">
-      <boarding-header/>
-      <div class="recover-password__content">
-        <div class="recover-password__content__field">
-          <div class="recover-password__content__field__forms">
-            <h1>{{ $t('webapp.recover_form.recover') }}</h1>
-            <reset-password-form
-              :nickname="$route.params.nickname"
-              :token="$route.params.token" />
-          </div>
+  <div class="recover-password">
+    <boarding-header/>
+    <div class="recover-password__content">
+      <div class="recover-password__content__field">
+        <div class="recover-password__content__field__forms">
+          <h1>{{ $t('webapp.recover_form.recover') }}</h1>
+          <reset-password-form
+            :nickname="$route.params.nickname"
+            :token="$route.params.token" />
         </div>
       </div>
     </div>
-  </boarding-layout>
+  </div>
 </template>
 
 <script>
 import ResetPasswordForm from '@/components/auth/ResetPasswordForm';
-import BoardingLayout from '@/components/user/BoardingLayout';
+import BoardingHeader from '@/components/user/BoardingHeader';
 
 const components = {
   ResetPasswordForm,
-  BoardingLayout,
+  BoardingHeader,
 };
 
 export default {

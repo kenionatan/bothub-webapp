@@ -23,7 +23,8 @@
                 @roleSetted="onRoleSetted()" />
               <authorizations-list
                 ref="authorizationsList"
-                :repository-uuid="repository.uuid" />
+                :repository-uuid="repository.uuid"
+                @edit="onEditRole($event)" />
             </div>
             <div class="settings__section">
               <h1>{{ $t('webapp.settings.authorization_requests') }}</h1>

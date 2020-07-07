@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`LoginForm.vue renders correctly 1`] = `
-<boarding-layout-stub>
+<div>
+  <boarding-header-stub class="header"></boarding-header-stub>
   <div class="signup">
     <div class="signup__content">
       <div class="signup__content__field">
@@ -33,6 +34,5 @@ exports[`LoginForm.vue renders correctly 1`] = `
       </div>
     </div>
   </div>
-  <div class="footer"></div>
-</boarding-layout-stub>
+</div>
 `;
