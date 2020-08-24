@@ -11,7 +11,9 @@
       v-model="query"
       class="evaluate-result-example-list__filter"/>
     <loading v-if="busy"/>
-    <p v-else-if="error">{{ $t('webapp.result.error') }}</p>
+    <p
+      v-else-if="error"
+      class="has-text-centered" >{{ $t('webapp.result.error') }}</p>
     <div v-else-if="resultExampleList && resultExampleList.length > 0">
       <evaluate-result-example-item
         v-for="(item, i) in resultExampleList"
@@ -40,7 +42,9 @@
           aria-current-label="Current page"/>
       </div>
     </div>
-    <p v-else>{{ $t('webapp.result.do_not_log') }}</p>
+    <p
+      v-else
+      class="has-text-centered">{{ $t('webapp.result.do_not_log') }}</p>
     <tour
       v-if="activeTutorial === 'evaluate' && resultExampleList.length > 0"
       :step-count="1"
