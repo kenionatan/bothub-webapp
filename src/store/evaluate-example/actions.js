@@ -56,7 +56,7 @@ export default {
   getResultsData(store, { repositoryUuid, resultId }) {
     return evaluateExample.getResultsData(repositoryUuid, resultId);
   },
-  getAllResultsLog(store, { repositoryUuid, resultId, page = 1 }) {
-    return evaluateExample.getAllResultsLog(repositoryUuid, resultId, page);
+  getAllResultsLog(store, { repositoryUuid, resultId, query={}, page = 1 }) {
+    return evaluateExample.getAllResultsLog(repositoryUuid, resultId, page, query);
   },
 };

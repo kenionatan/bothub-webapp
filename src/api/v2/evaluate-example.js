@@ -56,8 +56,13 @@ export default {
   getResultsData(repositoryUuid, resultId) {
     return request.$http.get(`/v2/repository/evaluate/results/${resultId}/?repository_uuid=${repositoryUuid}`);
   },
-  getAllResultsLog(repositoryUuid, resultId, page = 1) {
-    return request.$http.get(`/v2/repository/evaluate/results/${resultId}/?repository_uuid=${repositoryUuid}&page_intent=${page}`);
+  getAllResultsLog(repositoryUuid, resultId, page = 1, query = {}) {
+    const queryString = qs.stringify({
+      repository_uuid: repositoryUuid,
+      page_intent: page,
+      ...query,
+    });
+    return request.$http.get(`/v2/repository/evaluate/results/${resultId}/?${queryString}`);
   },
   allVersions(repositoryUuid, version, perPage = 20) {
     return new utils.Page('/v2/repository/evaluate/results/', perPage, { repository_uuid: repositoryUuid, repository_version: version });

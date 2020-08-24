@@ -4,16 +4,15 @@
       class="evaluate-result-example-list__title">
       {{ $t('webapp.result.sentence_details') }}
     </h3>
-    <div
-      v-if="busy"
-      class="evaluate-result-example-list__loading">
-      <Loading/>
-    </div>
+    <p>
+      {{ $t('webapp.result.sentence_details_text') }}
+    </p>
+    <evaluate-result-example-filter
+      v-model="query"
+      class="evaluate-result-example-list__filter"/>
+    <loading v-if="busy"/>
     <p v-else-if="error">{{ $t('webapp.result.error') }}</p>
     <div v-else-if="resultExampleList && resultExampleList.length > 0">
-      <p>
-        {{ $t('webapp.result.sentence_details_text') }}
-      </p>
       <evaluate-result-example-item
         v-for="(item, i) in resultExampleList"
         id="tour-evaluate_result-step-0"
@@ -52,6 +51,7 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex';
 import EvaluateResultExampleItem from '@/components/repository/repository-evaluate/results/EvaluateResultExampleItem';
+import EvaluateResultExampleFilter from '@/components/repository/repository-evaluate/results/EvaluateResultExampleFilter';
 import Loading from '@/components/shared/Loading';
 import Tour from '@/components/Tour';
 
@@ -59,6 +59,7 @@ export default {
   name: 'EvaluateResultExampleList',
   components: {
     EvaluateResultExampleItem,
+    EvaluateResultExampleFilter,
     Loading,
     Tour,
   },
@@ -71,6 +72,7 @@ export default {
   data() {
     return {
       resultExampleList: [],
+      query: {},
       limit: 10,
       busy: false,
       error: null,
@@ -93,6 +95,9 @@ export default {
     page() {
       this.updateList();
     },
+    query() {
+      this.updateList();
+    },
   },
   mounted() {
     this.updateList();
@@ -111,6 +116,7 @@ export default {
           repositoryUuid: this.repository.uuid,
           resultId: this.id,
           page: this.page,
+          query: this.query,
         });
         const data = response.data.log;
         this.resultExampleList = data.results;
@@ -135,9 +141,8 @@ export default {
     font-weight: 700;
   }
 
-  &__loading {
-    width: 100%;
-    text-align: center;
+  &__filter {
+    margin: 1.5rem 0 1rem 0;
   }
 
   &__pagination {
