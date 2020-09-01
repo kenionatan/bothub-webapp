@@ -3,13 +3,13 @@
     class="quick-test-text">
     <p
       v-if="!data || entitiesList.length === 0"
-      class="quick-test-text__text">{{ displayText }}</p>
+      class="quick-test-text__text quick-test-text__text--before">{{ displayText }}</p>
     <highlighted-text
       v-else
       :text="displayText"
       :highlighted="highlighted"
       :entities="entitiesList"
-      :all-entities="allEntities"
+      size="medium"
       class="quick-test-text__text" />
     <div
       v-if="error"
@@ -95,10 +95,6 @@ export default {
       type: String,
       required: true,
     },
-    allEntities: {
-      type: Array,
-      default: () => [],
-    },
   },
   data() {
     return {
@@ -113,6 +109,7 @@ export default {
     ...mapGetters([
       'getSelectedVersionRepository',
       'getSelectedVersion',
+      'getCurrentRepository',
     ]),
     entitiesNames() {
       if (!this.data || !this.data.entities_list) return [];
@@ -135,8 +132,6 @@ export default {
       return this.entitiesList.reduce((list, entity) => {
         const color = getEntityColor(
           entity.entity,
-          this.allEntities,
-          this.entitiesList,
         );
         // eslint-disable-next-line no-param-reassign
         list[entity.entity] = `entity-${color}`;
@@ -147,7 +142,7 @@ export default {
       const online = navigator.onLine;
       if (!online) return this.$t('webapp.quick_test.internet_off_quick_test');
 
-      if (this.repositoryStatus.count === 0) {
+      if (!this.getCurrentRepository.ready_for_parse) {
         return this.$t('webapp.quick_test.without_train_quick_test');
       }
 
@@ -156,12 +151,10 @@ export default {
   },
   mounted() {
     this.load();
-    this.trainingStatus();
   },
   methods: {
     ...mapActions([
       'analyzeText',
-      'getRepositoryStatusTraining',
     ]),
     async load() {
       this.loading = true;
@@ -189,13 +182,6 @@ export default {
         hasModalCard: false,
         trapFocus: true,
       });
-    },
-    async trainingStatus() {
-      const { data } = await this.getRepositoryStatusTraining({
-        repositoryUUID: this.getSelectedVersionRepository,
-        repositoryVersion: this.getSelectedVersion,
-      });
-      this.repositoryStatus = data;
     },
     debug() {
       this.$buefy.modal.open({
@@ -229,7 +215,10 @@ export default {
         color: #707070;
         text-align: left;
         font-weight: bold;
-        font-size: 18px;
+
+        &--before {
+          font-size: 1.125rem;
+        }
     }
 
     &__button {

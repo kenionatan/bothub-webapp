@@ -1,9 +1,9 @@
 <template>
   <div class="translation-status-info">
     <numbers-card
-      :count="languages.length"
       :disabled="!languages"
       :help-text="(languages || []).join(', ')"
+      :count="(languages || []).length"
       :label="$tc('webapp.summary.information_language',
                   (languages || []).length)"
       size="medium" />
@@ -89,7 +89,7 @@ export default {
     display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
-        padding: 0.25rem 1.5rem;
+        padding: 0.35rem 1.5rem;
         border: 1px solid $color-border;
 
         > * {

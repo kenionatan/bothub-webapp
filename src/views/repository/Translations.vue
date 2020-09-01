@@ -34,17 +34,15 @@
         :query="statusQuery"
         :repository-uuid="repository.uuid"
         v-model="toLanguage"
-        :translation-list="isListEmpty"
         class="translations__status"
         @updated="statusUpdated"/>
-      <hr>
+      <hr v-show="!(availableLanguages && availableLanguages.length <= 1)">
       <div class="translations__list">
         <translations-list
           ref="translationsList"
           :repository="repository"
           :to-language="toLanguage"
-          @exampleUpdated="exampleUpdated()"
-          @listNoEmpty="checkList()"/>
+          @exampleUpdated="exampleUpdated()" />
       </div>
     </div>
   </repository-view-base>
@@ -85,7 +83,6 @@ export default {
         from: null,
         to: null,
       },
-      isListEmpty: true,
     };
   },
   computed: {
@@ -101,9 +98,6 @@ export default {
       this.completedLanguages = completed;
       this.availableLanguages = available;
     },
-    checkList() {
-      this.isListEmpty = false;
-    },
     exampleUpdated() {
       this.updateStatus = !this.updateStatus;
     },
@@ -116,7 +110,7 @@ export default {
   .translations {
 
     &__status {
-      margin-top: 2.75rem;
+      margin-top: 3.75rem;
     }
 
     &__header {

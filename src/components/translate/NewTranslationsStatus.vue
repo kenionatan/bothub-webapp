@@ -2,11 +2,10 @@
   <div>
     <loading
       v-if="loading" />
-    <h3
-      v-else-if="filteredLanguagesStatus.length === 0"
-      class="has-text-centered"> {{ $t('webapp.translate.no_translated') }} </h3>
+    <p
+      v-else-if="filteredLanguagesStatus.length === 0 && computedLanguagesStatus.length !== 0"
+      class="has-text-centered"> {{ $t('webapp.translate.no_translated') }} </p>
     <transition-group
-      v-if="!translationList"
       name="list"
       mode="out-in"
       tag="div">
@@ -68,10 +67,6 @@ export default {
     update: {
       type: Boolean,
       default: false,
-    },
-    translationList: {
-      type: Boolean,
-      default: true,
     },
     query: {
       type: Object,
