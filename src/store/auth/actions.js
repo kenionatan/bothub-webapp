@@ -1,5 +1,6 @@
 import auth from '@/api/auth';
 import TYPES from '../types';
+import LuigiClient from '@luigi-project/client';
 
 
 export default {
@@ -12,11 +13,14 @@ export default {
     commit(TYPES.SET_TOKEN, response.data.token);
     dispatch('updateMyProfile');
   },
-  retriveAuthToken({ commit }) {
+  async retriveAuthToken({ commit }) {
     /* istanbul ignore next */
-    if (window.localStorage) {
-      commit(TYPES.SET_TOKEN, window.localStorage.getItem('authToken'));
-    }
+    LuigiClient.addInitListener((context) => {
+      commit(TYPES.SET_TOKEN, LuigiClient.getToken());
+    });
+    // if (window.localStorage) {
+    //   commit(TYPES.SET_TOKEN, window.localStorage.getItem('authToken'));
+    // }
   },
   logout({ commit, dispatch }) {
     commit(TYPES.SET_TOKEN, null);
